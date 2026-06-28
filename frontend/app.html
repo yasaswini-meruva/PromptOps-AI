@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PromptOps AI — Workspace</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/index.css">
+</head>
+<body>
+
+<!-- Mobile topbar -->
+<div class="mobile-bar" id="mobile-bar">
+  <button class="hamburger" onclick="toggleSidebar()" aria-label="Open menu">☰</button>
+  <div class="mark" style="width:20px;height:20px;border-radius:6px;background:linear-gradient(135deg,var(--violet),var(--cyan));"></div>
+  <span class="brand-text">PromptOps AI</span>
+</div>
+<div class="sidebar-overlay" id="sidebar-overlay" onclick="toggleSidebar()"></div>
+
+<div class="app">
+  <!-- SIDEBAR -->
+  <aside class="sidebar" id="sidebar" aria-label="Navigation">
+    <div class="sidebar-top">
+      <div class="brand">
+        <div class="mark" role="presentation"></div>
+        <span class="brand-text">PromptOps AI</span>
+      </div>
+    </div>
+    <nav class="sidebar-nav" id="nav" aria-label="Main navigation"></nav>
+    <div class="sidebar-foot">
+      <button class="btn btn-ghost" id="logout-button" type="button">Logout</button>
+      <a href="index.html">← Back to Home</a>
+    </div>
+  </aside>
+
+  <!-- WORKSPACE -->
+  <main class="workspace-wrap" id="workspace-wrap" role="main"></main>
+</div>
+
+<div id="toast-container" aria-live="polite" aria-atomic="false"></div>
+
+<!--
+  Script loading order (each file depends only on those above it):
+
+  1. utils.js      - esc, toast, copyText, copyRaw, setLoading, showError
+  2. api.js        - api(), API_BASE
+  3. auth.js       - getAuthToken, clearAuthToken, redirectToLogin, verifyAuthToken
+  4. navigation.js - PAGES, buildNav, toggleSidebar, greeting, goTo, renderPage, initPage
+  5. analytics.js  - homeTpl, initHome, analyticsTpl, loadAnalytics
+  6. evaluator.js  - evaluateTpl, runEvaluate, getScoreLabel, useBetterPrompt
+  7. optimizer.js  - optimizeTpl, runOptimize, saveOptimizedVersion, evaluateOptimized
+  8. library.js    - CATEGORIES, libraryTpl, loadLibrary, debouncedLibSearch,
+                     selectCat, toggleFav, loadIntoOptimizer, loadIntoEvaluator
+  9. playground.js - playgroundTpl, runPlayground
+  10. experiments.js - abtestTpl, runABTest
+  11. versions.js  - versionsTpl, saveVersion, loadVersions, filterVersions,
+                     renderTimeline, restoreVersion, deleteVersion
+  12. index.js     - wires logout button, calls buildNav(), boots app
+-->
+<script src="js/utils.js"></script>
+<script src="js/api.js"></script>
+<script src="js/auth.js"></script>
+<script src="js/navigation.js"></script>
+<script src="js/analytics.js"></script>
+<script src="js/evaluator.js"></script>
+<script src="js/optimizer.js"></script>
+<script src="js/library.js"></script>
+<script src="js/playground.js"></script>
+<script src="js/experiments.js"></script>
+<script src="js/versions.js"></script>
+<script src="js/index.js"></script>
+
+</body>
+</html>
