@@ -200,7 +200,7 @@ This project combines modern AI workflows, authentication, REST APIs, database m
 
 ---
 
-# 👨‍💻 Author
+#  Author
 
 **M. Reddy Yasaswini**
 
