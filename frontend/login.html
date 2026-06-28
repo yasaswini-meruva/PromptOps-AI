@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PromptOps AI — Login</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #06070d;
+  --panel: #0d1020;
+  --panel-2: #121624;
+  --line: rgba(255,255,255,0.08);
+  --ink: #edf0fb;
+  --slate: #9aa1be;
+  --violet: #7c5cff;
+  --cyan: #45e8d4;
+  --radius: 20px;
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html, body { min-height: 100%; }
+body {
+  font-family: 'Inter', sans-serif;
+  color: var(--ink);
+  background: radial-gradient(circle at top, rgba(124,92,255,0.08), transparent 28%),
+              radial-gradient(circle at 20% 20%, rgba(69,232,212,0.1), transparent 32%),
+              var(--bg);
+}
+a { color: inherit; text-decoration: none; }
+button { font-family: inherit; }
+.page { display: grid; place-items: center; min-height: 100vh; padding: 24px; }
+.card {
+  width: min(520px, 100%);
+  padding: 34px;
+  border-radius: var(--radius);
+  background: rgba(10,11,18,0.94);
+  border: 1px solid var(--line);
+  box-shadow: 0 24px 80px rgba(0,0,0,0.35);
+}
+.brand { display: flex; gap: 12px; align-items: center; margin-bottom: 24px; }
+.mark { width: 32px; height: 32px; border-radius: 12px; background: linear-gradient(135deg, var(--violet), var(--cyan)); box-shadow: 0 0 20px rgba(124,92,255,0.3); }
+.brand-text { font-family: 'Space Grotesk', sans-serif; font-size: 22px; font-weight: 700; }
+.headline { font-size: 28px; line-height: 1.1; margin-bottom: 10px; }
+.subline { color: var(--slate); margin-bottom: 28px; }
+.form-group { margin-bottom: 18px; }
+label { display: block; margin-bottom: 8px; font-size: 13px; color: var(--slate); }
+input { width: 100%; border: 1px solid var(--line); border-radius: 12px; background: rgba(255,255,255,0.03); color: var(--ink); padding: 13px 14px; font-size: 14px; }
+input:focus { outline: none; border-color: var(--violet); box-shadow: 0 0 0 3px rgba(124,92,255,0.12); }
+.btn { display: inline-flex; align-items: center; justify-content: center; width: 100%; border: none; border-radius: 12px; padding: 14px 0; font-weight: 700; font-size: 14px; cursor: pointer; color: #fff; background: linear-gradient(135deg, var(--violet), #5b3fe0); transition: transform 0.18s, filter 0.18s; }
+.btn:hover { filter: brightness(1.05); transform: translateY(-1px); }
+.cta-row { margin-top: 18px; display: flex; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
+.cta-row a { color: var(--cyan); font-size: 13px; }
+#error { margin-top: 12px; color: #ff9ca8; font-size: 13px; }
+</style>
+</head>
+<body>
+<div class="page">
+  <div class="card">
+    <div class="brand">
+      <div class="mark" aria-hidden="true"></div>
+      <div class="brand-text">PromptOps AI</div>
+    </div>
+    <div>
+      <h1 class="headline">Welcome back.</h1>
+      <p class="subline">Login to pick up where you left off with your prompt workflows.</p>
+    </div>
+    <form id="login-form">
+      <div class="form-group">
+        <label for="username">Username</label>
+        <input id="username" name="username" type="text" autocomplete="username" required />
+      </div>
+      <div class="form-group">
+        <label for="password">Password</label>
+        <input id="password" name="password" type="password" autocomplete="current-password" required />
+      </div>
+      <button type="submit" class="btn">Sign in</button>
+      <div id="error" role="alert" aria-live="polite"></div>
+    </form>
+    <div class="cta-row">
+      <a href="signup.html">Create a new account</a>
+      <a href="landing.html">Back to home</a>
+    </div>
+  </div>
+</div>
+<script>
+const API_BASE = "http://127.0.0.1:8000";
+const AUTH_STORAGE_KEY = "promptops_auth_token";
+const form = document.getElementById("login-form");
+const errorEl = document.getElementById("error");
+form.addEventListener("submit", async (event) => {
+  event.preventDefault();
+  errorEl.textContent = "";
+  const username = form.username.value.trim();
+  const password = form.password.value;
+  if (!username || !password) {
+    errorEl.textContent = "Username and password are required.";
+    return;
+  }
+  try {
+    const res = await fetch(`${API_BASE}/auth/login`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ username, password }),
+    });
+    const body = await res.json().catch(() => ({}));
+    if (!res.ok) {
+      errorEl.textContent = body.detail || "Login failed. Please check your credentials.";
+      return;
+    }
+    localStorage.setItem(AUTH_STORAGE_KEY, body.access_token);
+    window.location.href = "index.html";
+  } catch (err) {
+    errorEl.textContent = err.message || "Unable to connect to the server.";
+  }
+});
+</script>
+</body>
+</html>

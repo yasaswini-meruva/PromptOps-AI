@@ -1,0 +1,11 @@
+# Environment variables (NEVER commit this — contains API keys)
+.env
+
+# Python
+__pycache__/
+*.pyc
+venv/
+.venv/
+
+# IDE
+.vscode/
